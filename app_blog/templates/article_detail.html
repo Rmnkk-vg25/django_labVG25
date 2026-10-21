@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ item.title }}</title>
-</head>
-<body>
-    <ol class="breadcrumb">
-        <li><a href="/">Головна</a></li> / 
-        <li><a href="{% url 'articles-list' %}">Публікації</a></li> / 
-        <li><a href="{{ item.category.get_absolute_url }}">{{ item.category|upper }}</a></li> / 
-        <li>{{ item.title|upper }}</li>
-    </ol>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Головна</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'articles-list' %}">Публікації</a></li>
+    <li class="breadcrumb-item"><a href="{{ item.category.get_absolute_url }}">{{ item.category|upper }}</a></li>
+    <li class="breadcrumb-item active">{{ item.title|upper }}</li>
+  </ol>
+</nav>
+
+<div class="article-block">
+    <h3>{{ item.title }}</h3>
+    <h6 class="text-muted">{{ item.pub_date|date:"d E Y"|safe }}</h6>
     <hr>
-    
-    <div>
-        <h3>{{ item.title }}</h3>
-        <h5>{{ item.pub_date|date:"d E Y"|safe|linebreaks }}</h5>
-    </div>
-    
     <div>
         {{ item.description|escape|safe }}
     </div>
@@ -25,12 +22,14 @@
     {% if item.images.all %}
         <hr>
         <h4>Галерея:</h4>
+        <div class="row">
         {% for image in item.images.all %}
-            <div>
-                <img src="{{ image.image.url }}" alt="{{ image.title }}" style="max-width: 300px;">
-                <p>{{ image.title }}</p>
+            <div class="col-md-6 mb-3 container-image">
+                <img src="{{ image.image.url }}" alt="{{ image.title }}" class="img-fluid rounded shadow-sm" style="width: 100%;">
+                <p class="text-center mt-2">{{ image.title }}</p>
             </div>
         {% endfor %}
+        </div>
     {% endif %}
-</body>
-</html>
+</div>
+{% endblock %}

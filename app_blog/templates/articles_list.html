@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<h2 class="mb-4 text-white">Публікації {% if category %} - {{ category }} {% endif %}</h2>
+
+{% for item in items %}
+    <div class="article-block">
+        <a href="{{ item.get_absolute_url }}">
+            <h4>{{ item.title }}</h4>
+        </a>
+        <h6 class="text-muted">{{ item.pub_date|date:"j E Y"|safe }}</h6>
+        <p>{{ item.description|safe|escape|striptags|truncatewords_html:32 }}</p>
+    </div>
+{% endfor %}
+
+<a href="{% url 'home' %}" class="btn btn-secondary mt-3">Повернутися на головну</a>
+{% endblock %}
